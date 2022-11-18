@@ -1,9 +1,11 @@
 package functional
 
-class Location(val width: Int, val height: Int) {
+class Location(val width: Int = 4, val height: Int = 4) {
     val map = Array(width) {
         arrayOfNulls<String>(height)
     }
+
+    var location: Pair<Int, Int> = Pair(0, 0)
 
     init {
         map[0][0] = "You are at the start of your journey. [n / e]"
@@ -27,7 +29,23 @@ class Location(val width: Int, val height: Int) {
         map[3][3] = "You have reached the infinite desert. There is nothing here but sand dunes. You are bitten by a sand flea.[ s / w ] "
     }
 
-    fun updateLocation() {
-
+    fun updateLocation(direction: Directions) {
+        val (i, j) = location
+        var newLocation = Pair(0, 0)
+        when (direction) {
+            Directions.NORTH -> newLocation = Pair(i, j+1)
+            Directions.SOUTH -> newLocation = Pair(i, j-1)
+            Directions.EAST -> newLocation = Pair(i+1, j)
+            Directions.WEST -> newLocation = Pair(i-1, j)
+            else -> {}
+        }
+        if (newLocation.first in 0 until height && newLocation.second in 0 until width) {
+            location = newLocation
+            val (m, n) = location
+            println(map[m][n])
+        } else {
+            println("No can do :(")
+        }
+        println("You're at [${location.first}, ${location.second}]")
     }
 }
